@@ -1,0 +1,73 @@
+{% extends 'base_recipe.html' %}
+
+{% block recipe-content %}
+
+<h2>{% if edit %}Opprett{% else %}Rediger{% endif %} oppskrift</h2>
+<form method="post" id="add-recipe" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	{{ recipe_form.as_p}}
+
+	{{ ingredient_formset.management_form }}
+	<div id='ingredient-form-list'>
+		{% for ingredient_form in ingredient_formset %}
+			<div class='ingredient-form'>
+				{{ ingredient_form }}<br>
+			</div>
+		{% endfor %}
+	</div>
+  
+  <div id="empty-ingredient-form" class="hidden">{{ ingredient_formset.empty_form }}</div>
+  <button id="add-ingredient-form" class="bg-transparent text-red">Legg til ingrediens</button>
+
+  {{ category_formset.management_form }}
+  <div id='category-form-list'>
+	  {% for category_form in category_formset %}
+		  <div class='category-form'>
+			  {{ category_form }}<br>
+		  </div>
+	  {% endfor %}
+  </div>
+  
+  {% if request.user.is_superuser %}
+	<br><br>
+ 	<h3>Sponset oppskrift</h3>
+	<form id="sponsored" >
+		<input type="checkbox" id="sponsored" name="sponsored" value="true">
+		<label for="sponsored"> Denne retten er sponset</label><br>
+		<label for="sponsor">Sponsor</label><br>
+		<input type="text" id="sponsor" name="sponsor">
+	  </form>
+  {% endif %}
+
+  <button type="submit" form="add-recipe">Lagre oppskrift</button>
+  
+</form>
+
+<script>
+	const addIngredientBtn = document.getElementById('add-ingredient-form')
+	const totalIngredientForms = document.getElementById('id_ingredient-TOTAL_FORMS')
+  
+	addIngredientBtn.addEventListener('click', add_ingredient_form)
+  
+	function add_ingredient_form(event) {
+		if (event) {
+			event.preventDefault()
+		}
+		const currentIngredientForms = document.getElementsByClassName('ingredient-form')
+		const currentFormCount = currentIngredientForms.length
+
+		const formCopyTarget = document.getElementById('ingredient-form-list')
+		const copyEmptyIngredientForm = document.getElementById('empty-ingredient-form').cloneNode(true)
+		copyEmptyIngredientForm.setAttribute('class', 'ingredient-form')
+		copyEmptyIngredientForm.setAttribute('id', `ingredient-${currentFormCount}`)
+		const regex = new RegExp('__prefix__', 'g')
+		copyEmptyIngredientForm.innerHTML = copyEmptyIngredientForm.innerHTML.replace(
+			regex, currentFormCount
+		)
+		totalIngredientForms.setAttribute('value', currentFormCount + 1)
+
+		formCopyTarget.append(copyEmptyIngredientForm)
+	}
+</script>
+{% endblock recipe-content %}

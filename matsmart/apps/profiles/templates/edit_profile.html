@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Profile</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+        {{ profile_form.as_table }}
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+</div>
+
+{% if not request.user.is_superuser %}
+<!--DELETE BUTTON-->
+<button id="delete-btn" class="px-4 py-2 bg-red text-white rounded shadow hover:bg-darkred">
+    Slett 
+</button>
+<!--OVERLAY-->
+<div id="overlay" class="bg-black dark:bg-zinc-600 bg-opacity-50 dark:bg-opacity-50 absolute inset-0 hidden justify-center items-center">
+    <!--MODAL-->
+    <div class="bg-lightyellow dark:bg-black max-w-sm p-5 rounded shadow-xl">
+        <div class="flex justify-between items-center space-x-4">
+            <!--HEADING-->
+            <h4 class="text-lg font-bold">Bekreft sletting av profil</h4>
+            <svg class="h-6 w-6 -mt-4 cursor-pointer p-1 hover:bg-red hover:bg-opacity-30 rounded-full hover:fill-darkred dark:hover:fill-red" id="close-modal" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"></path>
+            </svg>
+        </div>
+        <div class="mt-3 text-sm">
+            <!--DESCRIPTION-->
+            <p>Dette kan ikke angres.</p>
+        </div>
+        <div class="mt-5 flex justify-center space-x-4">
+            <button id="cancel-modal"class="px-4 py-2 rounded hover:bg-red hover:bg-opacity-30 hover:text-darkred dark:hover:text-red">
+                Avbryt
+            </button>
+            <a href="{% url 'profiles:delete' %}">
+                <button class="px-4 py-2 bg-darkred text-gray-200 hover:bg-red rounded">
+                    Slett
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!--SCRIPT FOR MODAL WITH OVERLAY-->
+<script>
+    window.addEventListener('DOMContentLoaded', () =>{
+        const overlay = document.querySelector('#overlay')
+        const delBtn = document.querySelector('#delete-btn')
+        const closeBtn = document.querySelector('#close-modal')
+        const cancelBtn = document.querySelector('#cancel-modal')
+
+        const toggleModal = () => {
+            overlay.classList.toggle('hidden')
+            overlay.classList.toggle('flex')
+        }
+
+        delBtn.addEventListener('click', toggleModal)
+
+        closeBtn.addEventListener('click', toggleModal)
+
+        cancelBtn.addEventListener('click', toggleModal)
+    })
+
+</script>  
+ 
+
+<!--TODO: Fjerne nødvendighet om å ha bilde når man redigerer profil-->
+
+{% endblock %}

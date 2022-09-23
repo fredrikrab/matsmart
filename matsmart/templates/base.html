@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MatSmart</title>
+    <link rel="icon" type="image/x-icon" href="{% get_media_prefix %}/favicon.ico">
+    <link rel="stylesheet" href="{% static 'output.css' %}">
+
+    <!--SCRIPT FOR DARK MODE-->
+    <script>
+      if (
+        localStorage.getItem('color-theme') === 'dark' ||
+        (!('color-theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+
+  <body>
+    <!--NAVBAR-->
+    <nav class="flex items-center justify-between flex-wrap bg-lightyellow dark:bg-black border-b-2 border-b-yellow dark:border-b-darkred p-4">
+
+      <!--LOGO AND NAME-->
+      <div class="flex items-center flex-shrink-0 mr-6">
+        <a class="flex decoration-transparent" href="{{ HTTP_HOST }}/">
+          <div class="logo">
+            <img class="h-14 w-14 mr-2"  alt="MatSmart logo">
+          </div>
+          <h1> MatSmart </h1>
+        </a>
+      </div>
+
+      <!--LINKS WIDE-->
+      <div class="hidden lg:flex flex-grow p-2 bg-inherit items-center w-auto text-lg text-darkred dark:text-yellow">
+        <div class="flex-grow">
+
+          <!--RECIPES: Always visible-->
+          <a href="{% url 'recipes:list' %}" class="p-2 mt-0 mr-4">
+            Oppskrifter
+          </a>
+
+          <!--CREATE RECIPE: Visible if logged in-->
+          {% if user.is_authenticated %}
+          <a href="{% url 'recipes:create' %}" class="p-2 mt-0 mr-4">
+            Opprett oppskrift
+          </a>
+          {% endif %}
+
+          <!--SEARCH-->
+          <a href="{% url 'search:search' %}" class="p-2 mt-0 mr-4">Søk</a>
+        </div>
+
+        <!--GREETING and favorites page if logged in // LOG IN & REGISTER: if NOT logged in-->
+        {% if user.is_authenticated %}
+        <a href="{% url 'profiles:favorite_page' %}" class="mt-4 p-2 rounded-md lg:mt-0 text-red">Favoritter</a>
+        <a href="{% url 'profiles:profile_page_self' %}" class="mt-4 p-2 rounded-md lg:mt-0 text-red">Profilside</a>
+        <a href="{% url 'profiles:logout' %}" class="text-base px-4 py-2 mt-2 ml-2 lg:mt-0 leading-none border rounded text-white bg-red border-red hover:border-transparent hover:text-white hover:bg-darkred">Logg ut</a>
+        {% else %}
+        <a href="{% url 'profiles:login' %}" class="p-2 rounded-md pr-4">
+          Logg inn
+        </a>
+        <a href="{% url 'profiles:registration' %}">
+          <button>Registrer</button>
+        </a>
+        {% endif %}
+      </div>
+
+      <div class="flex items-center">
+        <!--DARKMODE BUTTON-->
+        <button
+          id="theme-toggle"
+          type="button"
+          class="border-0 text-darkred dark:text-yellow hover:bg-yellow dark:hover:bg-darkred rounded-lg text-sm p-2.5 m-2"
+        >
+          <svg
+            id="theme-toggle-dark-icon"
+            class="w-5 h-5 hidden"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+            ></path>
+          </svg>
+          <svg
+            id="theme-toggle-light-icon"
+            class="w-5 h-5 hidden"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+
+        <!--HAMBURGER MENU-->
+        <div class="block lg:hidden">
+          <button class="mobile-menu-button flex items-center p-3 bg-transparent border rounded text-darkred dark:text-yellow border-darkred dark:border-yellow hover:bg-yellow hover:border-yellow dark:hover:bg-darkred dark:hover:border-darkred">
+            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <!--LINKS SLIM-->
+      <div class="mobile-menu hidden w-full lg:hidden flex-grow p-2 text-lg flex justify-between text-darkred dark:text-yellow">
+        <div class="flex flex-col grow pr-2">
+          <!--RECIPES: Always visible-->
+          <a href="{% url 'recipes:list' %}" class="hover:bg-mediumyellow dark:hover:bg-darkred p-1 pl-2 rounded-md">
+            Oppskrifter
+          </a>
+          <!--CREATE RECIPE: Visible if logged in-->
+          {% if user.is_authenticated %}
+          <a href="{% url 'recipes:create' %}" class="hover:bg-mediumyellow dark:hover:bg-darkred p-1 pl-2 rounded-md">
+            Opprett oppskrift
+          </a>
+          {% endif %}
+
+          <!--SEARCH-->
+          <a href="{% url 'search:search' %}" class="hover:bg-mediumyellow dark:hover:bg-darkred p-1 pl-2 rounded-md">Søk</a>
+        </div>
+        <div class="flex flex-col border-l border-l-mediumyellow pl-4">
+          <!--GREETING: If logged in // LOG IN & REGISTER: if NOT logged in-->
+          {% if user.is_authenticated %}
+          <a href="{% url 'profiles:profile_page_self' %}" class="hover:bg-mediumyellow dark:hover:bg-darkred p-1 pl-2 rounded-md">Hei {{user}}</a>
+          {% else %}
+          <a href="{% url 'profiles:login' %}" class="hover:bg-mediumyellow dark:hover:bg-darkred p-1 pl-2 rounded-md">
+            Logg inn
+          </a>
+          <a href="{% url 'profiles:registration' %}" class="text-base px-4 py-2 mt-2 leading-none border rounded text-white bg-red border-red hover:border-transparent hover:text-white hover:bg-darkred">
+            Registrer
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      const btn = document.querySelector("button.mobile-menu-button");
+      const menu = document.querySelector(".mobile-menu");
+
+      btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+    </script>
+
+    <div class="py-1 px-0 sm:py-4 sm:px-6">
+      {% block content %}{% endblock content %}
+    </div>
+  </body>
+  {% if messages %}
+
+  <script>
+	  {% for message in messages %}
+		  alert("{{message}}");
+		{% endfor %}
+	</script>
+{% endif %}
+</html>
+
+<!--SCRIPT FOR DARK MODE-->
+<script>
+var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+// Change the icons inside the button based on previous settings
+if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    themeToggleLightIcon.classList.remove('hidden');
+} else {
+    themeToggleDarkIcon.classList.remove('hidden');
+}
+
+var themeToggleBtn = document.getElementById('theme-toggle');
+
+themeToggleBtn.addEventListener('click', function() {
+
+    // toggle icons inside button
+    themeToggleDarkIcon.classList.toggle('hidden');
+    themeToggleLightIcon.classList.toggle('hidden');
+
+    // if set via local storage previously
+    if (localStorage.getItem('color-theme')) {
+        if (localStorage.getItem('color-theme') === 'light') {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+        }
+
+    // if NOT set via local storage previously
+    } else {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+        }
+    }
+
+});
+</script>

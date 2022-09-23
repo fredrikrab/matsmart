@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Favoritter{% endblock title %}
+{% block content %}
+  <h2>Dine Favoritter</h2>
+  <div class="flex flex-grid items-center">
+    {% for recipe in recipes %}
+      {% include "view_recipe.html" %}
+    {% endfor %}
+  </div>
+{% endblock content %}

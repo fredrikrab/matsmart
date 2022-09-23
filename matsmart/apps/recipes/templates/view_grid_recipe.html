@@ -1,0 +1,24 @@
+<!--START POST-->
+
+<div class="recipe_grid mt-2 ml-2 border {% if recipe.sponsored %}bg-lime-100 dark:bg-black border-lime-700 dark:border-lime-500{%else%}bg-white dark:bg-black border-yellow dark:border-darkred{%endif%} sm:rounded">
+	<div class="topBar flex justify-between items-center px-2 sm:px-3 py-1 sm:py-2">
+		<h2 class="text-2xl {% if recipe.sponsored %}text-lime-900 dark:text-lime-200{%endif%} truncate"><a href="{{ recipe.get_absolute_url }}" >{{recipe.name}}</a></h2>
+	</div>
+	
+	<!--IMAGE-->
+    <div class="w-auto h-36 bg-cover bg-center" style="background-image:url('{{recipe.image.url}}')"></div>
+	
+	<!--TEXT-->
+	<div class="recipeText px-3 sm:px-6 py-1 sm:py-2">
+		<div class="beskrivelse">
+			<div class="truncate flex-grow-0">{{recipe.description}}</div>
+		</div>
+	</div>
+	<a class="font-medium px-3 sm:px-6" href="{{ recipe.get_absolute_url }}">Les mer…</a>
+
+	<!--BOTTOM BAR-->
+	<div class="bottomBar py-1 pr-1 pl-3 mt-3 sm:py-2 sm:pr-2 sm:pl-6 flex justify-end items-center border-t {% if recipe.sponsored %}border-t-lime-700 dark:border-t-lime-500 border-opacity-20 dark:border-opacity-50{%else%}border-t-mediumyellow dark:border-t-darkred dark:border-opacity-20 {%endif%}">
+		{% include 'favorite_and_comments.html' %}
+	</div>
+</div>
+<!--END POST-->

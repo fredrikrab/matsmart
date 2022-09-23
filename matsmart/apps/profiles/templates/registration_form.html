@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'styling-opprette-oppskrift.css' %}">{% endblock head %}
+
+{% block content %}
+<h2>Opprett ny profil</h2>
+<form method="post" enctype="multipart/form-data" id="create-user">
+  {% csrf_token %}
+
+  <label for="username">{{ form.username.label }}:</label><br>
+  {{ form.username }}<br>
+
+  <label for="password1">{{ form.password1.label }}:</label><br>
+  {{form.password1}}<br>
+
+  <label for="password2">{{ form.password2.label }}:</label><br>
+  {{form.password2}}<br>
+
+  <label for="description">{{ form.description.label }}:</label><br>
+  {{form.description}}<br>
+
+  <label for="profile_picture">{{ form.profile_picture.label }}:</label>
+  {{form.profile_picture}}<br>
+
+</form>
+
+<button type="submit" form="create-user">Lagre</button>
+
+{% if errors %}
+    <div class="text-red font-bold py-2">
+      {% for error in errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock content %}

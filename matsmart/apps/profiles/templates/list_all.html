@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="column">
+    
+{% for user_profile in user_profiles %}
+
+    <div class="block">
+      <div class="card">
+        <a href="#">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  {% if user_profile.profile_picture %}
+                  <img src="{{user_profile.profile_picture.url}}">
+                  {% endif %}
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">
+                  {{ user_profile.username }}
+                </p>
+                <p class="subtitle is-6">
+                  @{{ user_profile.username|lower }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+{% endfor %}
+
+</div>
+
+{% endblock content %}

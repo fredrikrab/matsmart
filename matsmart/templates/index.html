@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="flex flex-col items-center">
+	{% for recipe in recipes %}
+			{% include "view_recipe.html" %}
+	{% endfor %}
+</div>
+
+{% endblock content %}

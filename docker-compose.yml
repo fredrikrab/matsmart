@@ -1,0 +1,30 @@
+version: '2.1'
+services:
+  matsmart: # Django
+    build: .
+    volumes:
+      - ./matsmart:/django
+    ports:
+      - 8000:8000
+    image: matsmart:django
+    container_name: django_container
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      db:
+        condition: service_healthy
+  db: # PostgreSQL Database
+    image: postgres
+    volumes:
+      - ./matsmart/data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 1234:5432
+    container_name: postgres_container
+    healthcheck: # Sikre at databasen er klar før Django starter
+      test: pg_isready -U postgres -d postgres
+      interval: 1s
+      timeout: 5s
+      retries: 5

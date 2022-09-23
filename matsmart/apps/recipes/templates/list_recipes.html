@@ -1,0 +1,8 @@
+{% extends 'base_recipe.html' %}
+
+{% block recipe-content %}
+<div class="flex flex-col items-center">
+{% for recipe in recipes %}
+    {% include "view_recipe.html" %}
+{% endfor %}
+{% endblock recipe-content %}

@@ -1,0 +1,209 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$TK3Kqwgzui6N$vL3V/ObK+8a75Hdkf1eZ03/sMzEaS3/dVDgoFUDjntM=",
+            "last_login": "2022-02-23T12:46:16.219Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "email": "admin@matsmart.no",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2022-02-23T12:44:16.048Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$bDTcntV69Jx2$JxCvpFjDI19/PYDi37aXaFe3a+KSW50WoMjH4Ejk458=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "dummy-user",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2022-02-23T12:47:56.825Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "profiles.userprofile",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "description": "Vår superbruker",
+            "profile_picture": "profiles/placeholder.png"
+        }
+    },
+    {
+        "model": "profiles.userprofile",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "description": "Vår dummy-bruker",
+            "profile_picture": "profiles/placeholder.png"
+        }
+    },
+    {
+        "model": "recipes.recipe",
+        "pk": 1,
+        "fields": {
+            "name": "Japansk sushi",
+            "description": "Sushi er en japansk matrett. Sushi består av ris blandet med eddik, sammen med diverse toppinger (for eksempel fisk eller skalldyr). Det er en vanlig misforståelse at all sushi inneholder eller består av rå fisk.",
+            "image": "recipe/dummy-japansk-sushi.jpeg",
+            "user": 2,
+            "created_on": "2022-02-23T12:49:31.781Z",
+            "updated_on": "2022-02-23T12:49:31.781Z"
+        }
+    },
+    {
+        "model": "recipes.recipe",
+        "pk": 2,
+        "fields": {
+            "name": "Rask wok med lam og nudler",
+            "description": "Lammeskav er perfekt å steke i wok. Med grønnsaker, nudler og woksaus blir dette en kjempegod middagsrett med mye smak.",
+            "image": "recipe/dummy-wok-lam-nudler.jpeg",
+            "user": 2,
+            "created_on": "2022-02-23T12:50:57.952Z",
+            "updated_on": "2022-02-23T12:50:57.952Z"
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 1,
+        "fields": {
+            "name": "Sushiris"
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 2,
+        "fields": {
+            "name": "Laks"
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 3,
+        "fields": {
+            "name": "Lammeskav"
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 4,
+        "fields": {
+            "name": "Nudler"
+        }
+    },
+    {
+        "model": "recipes.ingredient",
+        "pk": 5,
+        "fields": {
+            "name": "Rødløk"
+        }
+    },
+    {
+        "model": "recipes.recipeingredientmap",
+        "pk": 1,
+        "fields": {
+            "recipe": 1,
+            "ingredient": 1,
+            "amount": "250 gr"
+        }
+    },
+    {
+        "model": "recipes.recipeingredientmap",
+        "pk": 2,
+        "fields": {
+            "recipe": 1,
+            "ingredient": 2,
+            "amount": "250 gr"
+        }
+    },
+    {
+        "model": "recipes.recipeingredientmap",
+        "pk": 3,
+        "fields": {
+            "recipe": 2,
+            "ingredient": 3,
+            "amount": "600 gr"
+        }
+    },
+    {
+        "model": "recipes.recipeingredientmap",
+        "pk": 4,
+        "fields": {
+            "recipe": 2,
+            "ingredient": 4,
+            "amount": "300 gr"
+        }
+    },
+    {
+        "model": "recipes.recipeingredientmap",
+        "pk": 5,
+        "fields": {
+            "recipe": 2,
+            "ingredient": 5,
+            "amount": "1 stk"
+        }
+    },
+	{
+		"model": "search.Category",
+		"pk": 1,
+		"fields": {
+			"name": "Frokost"
+		}
+	},
+	{
+		"model": "search.Category",
+		"pk": 2,
+		"fields": {
+			"name": "Lunsj"
+		}
+	},
+	{
+		"model": "search.Category",
+		"pk": 3,
+		"fields": {
+			"name": "Middag"
+		}
+	},
+	{
+		"model": "search.Category",
+		"pk": 4,
+		"fields": {
+			"name": "Dessert"
+		}
+	},
+	{
+		"model": "search.Category",
+		"pk": 5,
+		"fields": {
+			"name": "Raskt"
+		}
+	},
+	{
+		"model": "search.Category",
+		"pk": 6,
+		"fields": {
+			"name": "Sunt"
+		}
+	},
+	{
+		"model": "search.Category",
+		"pk": 7,
+		"fields": {
+			"name": "Lett"
+		}
+	}
+]

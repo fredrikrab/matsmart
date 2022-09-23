@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h2>Søk</h2>
+
+{% block searchbar %}
+<form id="searchbar-form">
+	<div class="container flex mt-2">
+		<div class="flex space-x-1">
+			<input id="searchbar" name="q" type="text" class="px-4 py-2 w-80 rounded" placeholder="Søk...">
+			<button class="flex items-center justify-center px-4 bg-transparent border-l border-zinc-500 hover:bg-yellow">
+				<svg class="w-6 h-6 text-zinc-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<path
+						d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z">
+					</path>
+				</svg>
+			</button>
+		</div>
+	</div>
+</form>
+
+<script>
+	document.getElementById("searchbar-form").addEventListener("submit", (event) => {
+			event.preventDefault();
+
+			let redirect_args = new URLSearchParams();
+
+			if (event.target[0].value != null)
+			{
+				redirect_args.set("q", event.target[0].value);
+			}
+
+			if (window.location.pathname == "/s%C3%B8k/")
+			{
+				let query_args = new URLSearchParams(window.location.search);
+				if (query_args.has("c")) redirect_args.set("c", query_args.get("c"));
+			}
+
+			window.location.pathname = "søk";
+			window.location.search   = redirect_args.toString();
+	});
+</script>
+
+{% endblock searchbar %}
+
+<script>
+	window.addEventListener('load', (event) => {
+		let query_string = (new URLSearchParams(window.location.search).get('q'));
+
+		if (query_string != null)
+		{
+			document.getElementById('searchbar').value = query_string;
+		}
+	});
+
+	function GetCategoryFilterArray()
+	{
+		let query_args = new URLSearchParams(window.location.search);
+		let filter_categories_string = query_args.get("c");
+
+		if (filter_categories_string == null) return null;
+		else                                  return filter_categories_string.split(',');
+	}
+
+	function SetCategoryFilters(arr)
+	{
+		let query_args = new URLSearchParams(window.location.search);
+
+		if (arr.length != 0) query_args.set('c', arr.join(','));
+		else if (query_args.has('c')) query_args.delete('c');
+
+		window.location.search = query_args.toString();
+	}
+
+	function AddCategoryFilter(name)
+	{
+			let filter_categories = GetCategoryFilterArray();
+
+			if (filter_categories == null)
+			{
+				filter_categories = [];
+			}
+
+			if (filter_categories.indexOf(name) == -1)
+			{
+				filter_categories.push(name);
+			}
+
+			SetCategoryFilters(filter_categories);
+	}
+
+	function RemoveCategoryFilter(name)
+	{
+			let filter_categories = GetCategoryFilterArray();
+
+			filter_categories = filter_categories.filter(category => category != name);
+
+			SetCategoryFilters(filter_categories);
+	}
+</script>
+<!-- script to get dropdown menu to show up -->
+<script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
+
+<div class="flex mt-6">
+	<div class="mr-6">
+		<div class="bg-lightyellow dark:bg-black border border-yellow dark:border-darkred p-4">
+			<h3 class="text-red dark:text-yellow">Filter valg</h3>
+			<div>
+				{% if filter_categories|length > 0 %}
+					{% for category in filter_categories %}
+						<div class="pb-1">
+							<a href="javascript:RemoveCategoryFilter('{{category}}')" class="flex"> 
+								<div class=" bg-red text-white font-bold px-2 rounded-full align-middle mr-1">&times</div> 
+								{{category}}
+							</a>
+						</div>
+					{% endfor %}
+				{% else %}
+					<p>Ingen kategorier valgt</p>
+				{% endif %}
+			</div>
+
+			<button id="dropdownButton" data-dropdown-toggle="dropdown" class="text-white bg-red hover:bg-yellow focus:ring-4 focus:ring-mediumyellow font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center mt-2" type="button">
+				Kategori
+				<svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+				</svg>
+			</button>
+
+			<!-- Dropdown menu -->
+			<div id="dropdown" class="hidden z-10 w-44 text-base list-none bg-white dark:bg-black rounded divide-y divide-zinc-100 shadow">
+				<ul class="py-1" aria-labelledby="dropdownButton">
+					{% for category in all_categories %}
+					<div>
+						<li>
+							<a href="javascript:AddCategoryFilter('{{category}}')" class="block py-2 px-4 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-700">{{category}}</a>
+						</li>
+					</div>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="flex-auto"></div>
+	</div>
+	<div class="flex-auto flex flex-col">
+		{% if recipes|length > 0 %}
+			{% for recipe in recipes %}
+				<div class="oppskrift flex justify-between p-2 bg-white dark:bg-black border-y border-y-yellow dark:border-y-darkred">
+					<div class="flex items-center">
+						<div class="w-24 h-20 bg-cover bg-center" style="background-image:url('{{recipe.image.url}}')"></div>
+						<div class="px-4">
+							<h3><a href="/oppskrifter/{{recipe.id}}">{{recipe.name}}</a></h3>
+							<p class="pt-2">Opprettet av {{recipe.user}}</p> <!-- Consider linking to profile-page -->
+						</div>
+					</div>
+					<!--Waiting for likes/rating functionality-->
+					<div class="flex justify-end items-center">
+						{% include 'favorite_and_comments.html' %}
+					</div>
+				</div>
+			{% endfor %}
+		{% else %}
+			<p>Ingen oppskrifter passer søkekriteriene</p>
+		{% endif %}
+	</div>
+</div>
+{% endblock content %}

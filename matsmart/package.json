@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.23"
+  },
+  "scripts": {
+    "build-css": "tailwindcss build -i static/styling.css -o static/output.css",
+    "watch-css": "tailwindcss -i static/styling.css -o static/output.css --watch"
+  },
+  "dependencies": {
+    "tailwind": "^4.0.0"
+  }
+}

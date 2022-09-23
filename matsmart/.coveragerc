@@ -1,0 +1,19 @@
+[run]
+branch = True
+source = .
+command_line = manage.py test apps
+plugins = django_coverage_plugin
+omit =
+    manage.py
+    config/*
+    */__init__.py
+    */admin.py
+    */tests.py
+    */urls.py
+    */migrations/*
+
+[django_coverage_plugin]
+template_extensions = html
+
+[report]
+skip_empty = True

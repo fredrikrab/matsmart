@@ -1,0 +1,44 @@
+/*Generell styling for alle sider på nettstedet*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply text-black dark:text-white text-xs sm:text-sm md:text-base lg:text-base bg-lightyellow dark:bg-blackest bg-[url("../images/background.svg")] dark:bg-[url("../images/background_dark.svg")];
+       }
+    h1 {
+        @apply text-darkred dark:text-yellow text-5xl font-bold;
+    }
+    h2 {
+        @apply text-red dark:text-yellow text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold;
+    }
+    h3 {
+        @apply text-orange text-sm sm:text-base md:text-xl lg:text-2xl;
+    }
+
+    a {
+        @apply hover:underline decoration-inherit;
+    }
+
+    ul {
+        @apply list-disc marker:text-orange pl-8;
+    }
+
+    ol {
+        @apply list-decimal marker:text-orange pl-8;
+    }
+
+    label {
+        @apply font-semibold;
+    }
+
+    button, button[type=submit] {
+        @apply text-base px-4 py-2 leading-none border-2 rounded text-white font-semibold bg-red border-red hover:border-transparent hover:text-white hover:bg-darkred;
+    }
+
+}
+
+.logo img {
+    content: url("../images/logo.png");
+}
